@@ -58,7 +58,11 @@ def apply_bow(train_data: pd.DataFrame, test_data: pd.DataFrame, max_features: i
         test_df = pd.DataFrame(X_test_bow.toarray())
         test_df['label'] = y_test
 
-        pickle.dump(vectorizer, open('models/vectorizer.pkl', 'wb'))
+        os.makedirs("models", exist_ok=True)
+        # Save the vectorizer
+        with open("models/vectorizer.pkl", "wb") as f:
+            pickle.dump(vectorizer, f)
+
         logging.info('Bag of Words applied and data transformed')
 
         return train_df, test_df
