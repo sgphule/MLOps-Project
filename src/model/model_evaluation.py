@@ -90,7 +90,6 @@ def evaluate_model(clf, X_test: np.ndarray, y_test: np.ndarray) -> dict:
 def save_metrics(metrics: dict, file_path: str) -> None:
     """Save the evaluation metrics to a JSON file."""
     try:
-        os.makedirs(file_path, exist_ok=True)
         with open(file_path, 'w') as file:
             json.dump(metrics, file, indent=4)
         logging.info('Metrics saved to %s', file_path)
@@ -122,8 +121,9 @@ def main():
             y_test = test_data.iloc[:, -1].values
 
             metrics = evaluate_model(clf, X_test, y_test)
-
-            save_metrics(metrics, 'reports/metrics.json')
+            directory = "reports"
+            os.makedirs(directory, exist_ok=True)
+            save_metrics(metrics, directory + '/metrics.json')
 
             # Log metrics to MLflow
             for metric_name, metric_value in metrics.items():
