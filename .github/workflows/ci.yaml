@@ -27,11 +27,15 @@ jobs:
         run: |
           pip install -r requirements.txt --no-deps
 
-      - name: DVC Pull
-        run: dvc pull
+      - name: Configure AWS credentials
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          MLOPS_SECRET: ${{ secrets.MLOPS_SECRET }}
+        run: |
+          dvc remote modify s3_remote access_key_id $AWS_ACCESS_KEY_ID
+          dvc remote modify s3_remote secret_access_key $AWS_SECRET_ACCESS_KEY
 
       - name: run pipeline
-        env:
-          CAPSTONE_TEST: ${{ secrets.MLOPS_SECRET }}
         run: |
           dvc repro
