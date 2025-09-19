@@ -1,5 +1,5 @@
 # register model
-
+import os
 import json
 import mlflow
 from src.logger import logging
@@ -9,12 +9,28 @@ import warnings
 warnings.simplefilter("ignore", UserWarning)
 warnings.filterwarnings("ignore")
 
+# Below code block is for production use
+# -------------------------------------------------------------------------------------
+# Set up DagsHub credentials for MLflow tracking
+dagshub_token = os.getenv("MLOPS_SECRET")
+if not dagshub_token:
+    raise EnvironmentError("MLOPS_SECRET environment variable is not set")
+
+os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+
+dagshub_url = "https://dagshub.com"
+repo_owner = "sgphule"
+repo_name = "MLOps-Project"
+
+# Set up MLflow tracking URI
+mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
 # -------------------------------------------------------------------------------------
 # Below code block is for local use
 # -------------------------------------------------------------------------------------
-mlflow.set_tracking_uri('https://dagshub.com/sgphule/MLOps-Project.mlflow')
-dagshub.init(repo_owner='sgphule', repo_name='MLOps-Project', mlflow=True)
+# mlflow.set_tracking_uri('https://dagshub.com/sgphule/MLOps-Project.mlflow')
+# dagshub.init(repo_owner='sgphule', repo_name='MLOps-Project', mlflow=True)
 
 
 def load_model_info(file_path: str) -> dict:
