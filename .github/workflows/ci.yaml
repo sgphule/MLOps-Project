@@ -33,8 +33,9 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           MLOPS_SECRET: ${{ secrets.MLOPS_SECRET }}
         run: |
-          dvc remote modify myremote access_key_id $AWS_ACCESS_KEY_ID
-          dvc remote modify myremote secret_access_key $AWS_SECRET_ACCESS_KEY
+          dvc remote add -d myremote s3://mlopsproject-bucket
+          dvc remote modify myremote access_key_id ${{ AWS_ACCESS_KEY_ID }}
+          dvc remote modify myremote secret_access_key ${{ AWS_SECRET_ACCESS_KEY }}
 
       - name: run pipeline
         run: |
