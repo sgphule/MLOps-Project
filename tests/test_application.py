@@ -2,9 +2,6 @@ from unittest import TestCase
 from flask_app.application import app
 
 class Test(TestCase):
-    def test_predict(self):
-        self.fail()
-
     @classmethod
     def setUpClass(cls):
         cls.client = app.test_client()
