@@ -6,6 +6,7 @@ import os
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import pickle
+import warnings
 
 class TestModelLoading(TestCase):
 
@@ -46,6 +47,7 @@ class TestModelLoading(TestCase):
 
     @staticmethod
     def get_latest_model_version(model_name, stage="Staging"):
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
         client = mlflow.MlflowClient()
         versions = client.search_model_versions(f"name='{model_name}'")
         staged_versions = [v for v in versions if v.current_stage == stage]
