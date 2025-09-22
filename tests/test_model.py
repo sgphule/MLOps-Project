@@ -38,11 +38,22 @@ class TestModelLoading(TestCase):
         # Load holdout test data
         cls.holdout_data = pd.read_csv('artifact/processed/test_bow.csv')
 
+    # @staticmethod
+    # def get_latest_model_version(model_name, stage="Staging"):
+    #     client = mlflow.MlflowClient()
+    #     latest_version = client.get_latest_versions(model_name, stages=[stage])
+    #     return latest_version[0].version if latest_version else None
+
     @staticmethod
     def get_latest_model_version(model_name, stage="Staging"):
         client = mlflow.MlflowClient()
-        latest_version = client.get_latest_versions(model_name, stages=[stage])
-        return latest_version[0].version if latest_version else None
+        versions = client.search_model_versions(f"name='{model_name}'")
+        staged_versions = [v for v in versions if v.current_stage == stage]
+        if not staged_versions:
+            return None
+        # Sort by version number (as string), convert to int for proper comparison
+        latest = max(staged_versions, key=lambda v: int(v.version))
+        return latest.version
 
     def test_model_loaded_properly(self):
         self.assertIsNotNone(self.new_model)
