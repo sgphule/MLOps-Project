@@ -2,9 +2,11 @@
 
 import os
 import mlflow
+import warnings
 
 def promote_model():
     # Set up DagsHub credentials for MLflow tracking
+    warnings.filterwarnings("ignore", category=DeprecationWarning)
     dagshub_token = os.getenv("MLOPS_SECRET")
     if not dagshub_token:
         raise EnvironmentError("MLOPS_SECRET environment variable is not set")
