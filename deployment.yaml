@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mlops-ecr-repo
-        image: 020866158197.dkr.ecr.us-east-1.amazonaws.com/mlops-ecr-repo:latest
+        image: 210691132298.dkr.ecr.eu-central-1.amazonaws.com/mlops-ecr-repo
         ports:
         - containerPort: 5000
         resources:
