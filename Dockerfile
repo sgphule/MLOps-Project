@@ -12,8 +12,8 @@ RUN python -m nltk.downloader stopwords wordnet
 
 EXPOSE 5000
 
-#local
-CMD ["python", "application.py"]
+# local
+# CMD ["python", "application.py"]
 
-#Prod
-# CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--timeout", "120", "app:app"]
+# Prod
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--timeout", "120", "app:app"]
